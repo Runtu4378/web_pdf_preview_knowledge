@@ -1,10 +1,11 @@
-import { Row, Col, Button } from 'antd'
+import { Row, Col } from 'antd'
 import Page from 'components/page'
 import Code from 'components/code'
 import { Part, Block } from 'components/markdown'
 import les from './index.less'
+import PDFViewer from 'components/pdf.js'
 
-const innerPDF = require('../../static/test.pdf')
+const innerPDF = require('../../resource/test.pdf')
 
 const Layout = () => {
   const viewList = [
@@ -36,7 +37,7 @@ const Layout = () => {
         </Col>
         <Col span={20}>
           <h2>PDF 预览实现的两种方式</h2>
-          <h3><a name="p1" />利用浏览器的自带插件实现预览</h3>
+          <h3><a name="p1">利用浏览器的自带插件实现预览</a></h3>
 
           <Part>
             <div><Block>优点：</Block></div>
@@ -69,7 +70,7 @@ const Layout = () => {
             <div><Block>变种实现:</Block></div>
             <h3>1.iframe 内嵌</h3>
             <Part>
-              <iframe src="http://localhost:3000/dist/test.pdf" width="100%" height="500px">
+              <iframe title="iframe" src="http://localhost:3000/dist/test.pdf" width="100%" height="500px">
                 This browser does not support PDFs. Please download the PDF to view it: <a href="http://localhost:3000/dist/test.pdf">Download PDF</a>
               </iframe>
               <Code
@@ -106,7 +107,15 @@ const Layout = () => {
               />
             </Part>
           </Part>
-          <h3><a name="p2" />JS 插件自行实现预览</h3>
+          <h3><a name="p2">JS 插件自行实现预览</a></h3>
+          <Part>
+            <h4>mozilla/pdf.js</h4>
+            <Part>
+              <PDFViewer
+                url='/static/test.pdf'
+              />
+            </Part>
+          </Part>
         </Col>
       </Row>
     </Page>
