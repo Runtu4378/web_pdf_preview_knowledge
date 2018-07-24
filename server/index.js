@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({
   extended: true,
 })) // for parsing application/x-www-form-urlencoded
 
+app.use('/dist', express.static('dist'))
+
 const port = 3000
 const isDev = app.get('env') !== 'production'
 

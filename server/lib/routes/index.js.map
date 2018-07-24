@@ -1,0 +1,1 @@
+{"version":3,"sources":["routes/index.js"],"names":["router","app","get","req","res","next","send","module","exports"],"mappings":";;AAAA,IAAMA,SAAS,SAATA,MAAS,CAACC,GAAD,EAAS;AACtBA,MAAIC,GAAJ,CAAQ,GAAR,EAAa,UAACC,GAAD,EAAMC,GAAN,EAAWC,IAAX,EAAoB;AAC/BD,QAAIE,IAAJ,CAAS,aAAT;AACD,GAFD;AAGD,CAJD;;AAMAC,OAAOC,OAAP,GAAiBR,MAAjB","file":"index.js","sourceRoot":"../../src"}
