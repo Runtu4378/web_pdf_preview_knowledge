@@ -9,6 +9,11 @@ let Router = DefaultRouter;
 
 let routes = [
   {
+    "path": "/browserViewer",
+    "exact": true,
+    "component": require('../browserViewer/index.js').default
+  },
+  {
     "path": "/",
     "exact": true,
     "component": require('../index/index.js').default
