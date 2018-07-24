@@ -92,17 +92,19 @@ const Layout = () => {
             </Part>
 
             <h3>3.object 标签</h3>
-            <object data="http://localhost:3000/dist/test.pdf" type="application/pdf" width="100%" height="500px">
-              This browser does not support PDFs. Please download the PDF to view it: <a href="http://localhost:3000/dist/test.pdf">Download PDF</a>
-            </object>
-            <Code
-              type="html"
-              code={`<object data="http://localhost:3000/dist/test.pdf" type="application/pdf" width="100%" height="500px">
+            <Part>
+              <object data="http://localhost:3000/dist/test.pdf" type="application/pdf" width="100%" height="500px">
+                This browser does not support PDFs. Please download the PDF to view it: <a href="http://localhost:3000/dist/test.pdf">Download PDF</a>
+              </object>
+              <Code
+                type="html"
+                code={`<object data="http://localhost:3000/dist/test.pdf" type="application/pdf" width="100%" height="500px">
 
-  This browser does not support PDFs. Please download the PDF to view it: <a href="http://localhost:3000/dist/test.pdf">Download PDF</a>
-  
+    This browser does not support PDFs. Please download the PDF to view it: <a href="http://localhost:3000/dist/test.pdf">Download PDF</a>
+
 </object>`}
-            />
+              />
+            </Part>
           </Part>
           <h3><a name="p2" />JS 插件自行实现预览</h3>
         </Col>
