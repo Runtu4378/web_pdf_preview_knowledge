@@ -111,6 +111,19 @@ const Layout = () => {
           <Part>
             <h4>mozilla/pdf.js</h4>
             <Part>
+              <div>
+                <div><Block>缺点：</Block></div>
+                <ul>
+                  <li>不支持低版本IE(9以下)</li>
+                  <li>体积约 3m (gzip前)</li>
+                </ul>
+                <div><Block>优点：</Block></div>
+                <ul>
+                  <li>mozilla出品，现在仍在更新</li>
+                  <li>不依赖浏览器的PDF预览插件，大概实现原理是利用算法将 pdf 转换为数据结构，然后在 canvas 上输出</li>
+                  <li>提供若干 API 接口，可以自行封装换页等插件</li>
+                </ul>
+              </div>
               <PDFViewer
                 url='/static/test.pdf'
               />

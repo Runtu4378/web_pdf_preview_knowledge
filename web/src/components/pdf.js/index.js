@@ -21,7 +21,7 @@ class Viewer extends React.Component {
     currentPage: 1,
     canvas: null,
     ctx: null,
-    scale: 1.5,
+    scale: 1.3,
   }
 
   initPDF () {
