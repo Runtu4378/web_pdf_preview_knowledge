@@ -5,24 +5,41 @@ import Code from 'components/code'
 import { Part, Block } from 'components/markdown'
 import les from './index.less'
 import PDFViewer from 'components/pdf.js'
+import Piframe from './p-iframe'
+import Pembed from './p-embed'
+import Pobject from './p-object'
 
 const Option = Select.Option
 
+const staticList = [
+  { key: 's-normal', href: '/static/normal.pdf', label: '静态文件' },
+  { key: 's-noFont', href: '/static/noFont.pdf', label: '静态文件-无内嵌字体' },
+  { key: 's-needPwd', href: '/static/needPwd.pdf', label: '静态文件-加密文档' },
+]
+const staticCORSList = [
+  { key: 's-c-normal', href: 'http://localhost:3000/dist/normal.pdf', label: '跨域静态文件' },
+  { key: 's-c-noFont', href: 'http://localhost:3000/dist/noFont.pdf', label: '跨域静态文件-无内嵌字体' },
+  { key: 's-c-needPwd', href: 'http://localhost:3000/dist/needPwd.pdf', label: '跨域静态文件-加密文档' },
+]
+const base64List = [
+  { key: 'b-normal', href: 'http://localhost:3000/file/normal.pdf', label: '跨域Base64' },
+  { key: 'b-noFont', href: 'http://localhost:3000/file/noFont.pdf', label: '跨域Base64-无内嵌字体' },
+  { key: 'b-needPwd', href: 'http://localhost:3000/file/needPwd.pdf', label: '跨域Base64-加密文档' },
+]
+
 class Layout extends React.Component {
   state = {
-    showUrl: '/static/normal.pdf',
+    URLType: 'static', // or base64
+    showUrl: staticList[0]['href'],
   }
-  changeUrl = (url) => {
-    this.setState({ showUrl: url })
+  changeUrl = (url, type) => {
+    this.setState({ URLType: type, showUrl: url })
   }
   render() {
-    const { showUrl } = this.state
-    const viewList = [
-      { key: 'normal', href: '/static/normal.pdf', label: '静态文件' },
-      { key: 'noFont', href: '/static/noFont.pdf', label: '静态文件-无内嵌字体' },
-      { key: 'needPwd', href: '/static/needPwd.pdf', label: '静态文件-加密文档' },
-      { key: 'outsideStatic', href: 'http://localhost:3000/dist/test.pdf', label: '跨域静态文件' }
-    ]
+    const {
+      URLType,
+      showUrl,
+    } = this.state
     const mapView = (list) => {
       return list.map(d => {
         return (
@@ -36,27 +53,65 @@ class Layout extends React.Component {
         )
       })
     }
+    const mapSelect = (title, list, type = 'static') => {
+      return (
+        <div className={les.selectGup}>
+          <div className={les.title}>{title}</div>
+          <Select style={{ width: '100%' }} defaultValue={null} onChange={(v) => this.changeUrl(v, type)}>
+          {
+            list.map(d => {
+              return (
+                <Option
+                  key={d.key}
+                  value={d.href}
+                >{d.label}</Option>
+              )
+            })
+          }
+          </Select>
+        </div>
+      )
+    }
+
     return (
       <Page>
         <Row gutter={16} className={les.container}>
           <Col span={4} className={les.left}>
             <h2>目录</h2>
             <div>
-              <p><a href="#p1">利用浏览器的自带插件实现预览</a></p>
-              <p><a href="#p2">JS 插件自行实现预览</a></p>
-              <p><a href="#p3">参考资料</a></p>
+              <p><a href="#p1">后端提供PDF内容的方式</a></p>
+              <p><a href="#p2">利用浏览器的自带插件实现预览</a></p>
+              <p><a href="#p3">JS插件自行实现预览</a></p>
+              <p><a href="#p4">参考资料</a></p>
             </div>
             <div>
-              <Select style={{ width: '100%' }} value={showUrl} onChange={this.changeUrl}>
-                <Option key={1} value={'/static/normal.pdf'}>静态文件</Option>
-                <Option key={2} value={'/static/noFont.pdf'}>静态文件-无内嵌字体</Option>
-                <Option key={3} value={'/static/needPwd.pdf'}>静态文件-加密文档</Option>
-              </Select>
+              {mapSelect('静态文件', staticList)}
+              {mapSelect('跨域静态文件', staticCORSList)}
+              {mapSelect('跨域Base64', base64List, 'base64')}
             </div>
           </Col>
           <Col span={20} className={les.right}>
+            <h2><a name="p1">后端提供PDF内容的方式</a></h2>
+            <Part>
+              <ul>
+                <li>
+                  <div><Block>二进制（直接返回文件）</Block></div>
+                  <Part>
+                    此时响应的类型 <Block>Content-Type</Block> 为 <Block>application/pdf</Block>
+                    浏览器对此类型的响应的默认处理方式为下载，在使用了预览插件的浏览器会不下载文件而是触发预览行为
+                  </Part>
+                </li>
+                <li>
+                  <div><Block>Base64</Block></div>
+                  <Part>
+                    Base64的处理方式实际是后台将PDF文件的二进制内容转换为Base64编码
+                  </Part>
+                </li>
+              </ul>
+            </Part>
+
             <h2>PDF 预览实现的两种方式</h2>
-            <h3><a name="p1">利用浏览器的自带插件实现预览</a></h3>
+            <h3><a name="p2">利用浏览器的自带插件实现预览</a></h3>
   
             <Part>
               <div><Block>缺点：</Block></div>
@@ -78,7 +133,7 @@ class Layout extends React.Component {
   
             <Part>
               <div><Block>例子：</Block></div>
-              {mapView(viewList)}
+              {mapView(staticList)}
             </Part>
   
             <Part>
@@ -92,45 +147,15 @@ class Layout extends React.Component {
             <Part>
               <div><Block>变种实现:</Block></div>
               <h3>1.iframe 内嵌</h3>
-              <Part>
-                <iframe title="iframe" src={showUrl} width="100%" height="500px">
-                  This browser does not support PDFs. Please download the PDF to view it: <a href={showUrl}>Download PDF</a>
-                </iframe>
-                <Code
-                  type="html"
-                  code={`<iframe src=${showUrl} width="100%" height="500px">
-                
-  This browser does not support PDFs. Please download the PDF to view it: <a href=${showUrl}>Download PDF</a>
-                    
-</iframe>`}
-                />
-              </Part>
+              <Piframe type={URLType} url={showUrl} />
   
               <h3>2.embed 标签</h3>
-              <Part>
-                <embed src={showUrl} type="application/pdf" width="100%" height="500px" />
-                <Code
-                  type="html"
-                  code={`<embed src=${showUrl} type="application/pdf" width="100%" height="500px" />`}
-                />
-              </Part>
+              <Pembed type={URLType} url={showUrl} />
   
               <h3>3.object 标签</h3>
-              <Part>
-                <object data={showUrl} type="application/pdf" width="100%" height="500px">
-                  This browser does not support PDFs. Please download the PDF to view it: <a href={showUrl}>Download PDF</a>
-                </object>
-                <Code
-                  type="html"
-                  code={`<object data=${showUrl} type="application/pdf" width="100%" height="500px">
-  
-  This browser does not support PDFs. Please download the PDF to view it: <a href=${showUrl}>Download PDF</a>
-  
-</object>`}
-                />
-              </Part>
+              <Pobject type={URLType} url={showUrl} />
             </Part>
-            <h3><a name="p2">JS 插件自行实现预览</a></h3>
+            <h3><a name="p3">JS插件自行实现预览</a></h3>
             <Part>
               <h4>mozilla/pdf.js</h4>
               <Part>
@@ -153,9 +178,12 @@ class Layout extends React.Component {
               </Part>
             </Part>
 
-            <h3><a name="p3">参考资料</a></h3>
+            <h3><a name="p4">参考资料</a></h3>
             <Part>
               <ul>
+                <li>
+                  <a href="https://blog.csdn.net/maweiqi/article/details/7677411">各浏览器对常用或者错误的 Content-Type 类型处理方式不一致</a>
+                </li>
                 <li>
                   <a href="https://blog.csdn.net/qappleh/article/details/80250492">前端预览PDF总结：iframe、embed、PDFObject、PDF.js</a>
                 </li>
@@ -167,6 +195,9 @@ class Layout extends React.Component {
                 </li>
                 <li>
                   <a href="https://mozilla.github.io/pdf.js/api/draft/index.html">mozilla/PDF.js API文档</a>
+                </li>
+                <li>
+                  <a href="https://mozilla.github.io/pdf.js/web/viewer.html">mozilla/PDF.js 官方实现的pdf阅读器</a>
                 </li>
               </ul>
             </Part>

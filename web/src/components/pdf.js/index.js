@@ -75,6 +75,7 @@ class Viewer extends React.Component {
       that.setState({
         needPwd: true,
         pwdModalShow: true,
+        withCredentials: true,
       })
     }
     loadingTask.promise.then(function (pdf) {
