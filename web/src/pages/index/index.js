@@ -173,6 +173,7 @@ class Layout extends React.Component {
                   </ul>
                 </div>
                 <PDFViewer
+                  type={URLType}
                   url={showUrl}
                 />
               </Part>

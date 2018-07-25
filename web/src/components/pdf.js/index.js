@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Spin, Pagination, Modal } from 'antd'
 import les from './index.less'
+import request from 'utils/request'
 
 // import pdfjsLib from 'pdfjs-dist'
 // import 'pdfjs-dist/build/pdf.worker.js'
@@ -36,15 +37,34 @@ class Viewer extends React.Component {
       canvas,
       ctx: canvas.getContext('2d'),
     })
-    this.initPDF()
+    this.initPdfType()
   }
 
   componentDidUpdate () {
-    const { url } = this.props
-    const { url: urlOld } = this.state
-    if (url !== urlOld && urlOld) {
-      this.setState({ loading: true, url: url })
-      this.initPDF()
+    this.initPdfType()
+  }
+
+  initPdfType () {
+    const that = this
+    const {
+      type,
+      url
+    } = that.props
+    const { url: oldUrl } = that.state
+    if (oldUrl === url) {
+      return
+    }
+    that.setState({ loading: true, url })
+    if (type === 'base64') {
+      // 进入base64处理模式
+      request({ url }).then(res => {
+        const { success, data } = res
+        if (success) {
+          that.initPDF({ data: atob(data) })
+        }
+      })
+    } else {
+      that.initPDF({ url })
     }
   }
 
@@ -60,15 +80,14 @@ class Viewer extends React.Component {
     }
   }
 
-  initPDF () {
+  initPDF (initObj) {
     const that = this
-    const { url } = that.props
     const { currentPage, pwd } = this.state
     // 清空canvas
     this.clearCanvas()
     const loadingTask = pdfjsLib.getDocument({
-      url: url,
       password: pwd,
+      ...initObj,
     })
     loadingTask.onPassword = () => {
       console.log('need pwd')
@@ -81,7 +100,7 @@ class Viewer extends React.Component {
     loadingTask.promise.then(function (pdf) {
       console.log('PDF loaded')
       console.log(`PDF page Num: ${pdf.numPages}`)
-      that.setState({ pdfDoc: pdf, url: url, pageNum: pdf.numPages })
+      that.setState({ pdfDoc: pdf, pageNum: pdf.numPages })
       // Fetch the first page
       that.renderPage(currentPage)
     }).catch(function (reason) {

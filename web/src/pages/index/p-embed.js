@@ -6,6 +6,7 @@ import dealFunc from './dealBase64'
 class Page extends React.Component {
   state = {
     url: null,
+    data: null,
   }
   initUrl () {
     const that = this
@@ -22,11 +23,11 @@ class Page extends React.Component {
       dealFunc(url).then(res => {
         const { success, data } = res
         if (success) {
-          that.setState({ url: `data:application/pdf;base64,${data}` })
+          that.setState({ url, data: `data:application/pdf;base64,${data}` })
         }
       })
     } else {
-      that.setState({ url })
+      that.setState({ url, data: url })
     }
   }
   componentDidMount () {
@@ -37,12 +38,12 @@ class Page extends React.Component {
   }
   render () {
     const {
-      url,
+      data,
     } = this.state
     return (
       <Part>
         <embed
-          src={url}
+          src={data}
           type="application/pdf"
           width="100%"
           height="500px"
@@ -50,7 +51,7 @@ class Page extends React.Component {
         <Code
           type="html"
           code={`<embed
-  src="${url}"
+  src="${data}"
   type="application/pdf"
   width="100%"
   height="500px"
