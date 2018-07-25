@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Spin, Pagination } from 'antd'
+import { Spin, Pagination, Modal } from 'antd'
 import les from './index.less'
 
 // import pdfjsLib from 'pdfjs-dist'
@@ -16,23 +16,71 @@ class Viewer extends React.Component {
 
   state = {
     pdfDoc: null,
+    url: null,
+    pwd: null,
+    needPwd: null,
+    pwdModalShow: false,
+
     loading: true,
     pageNum: 0,
     currentPage: 1,
+
     canvas: null,
     ctx: null,
     scale: 1.3,
   }
 
+  componentDidMount () {
+    const canvas = document.getElementById('the-canvas')
+    this.setState({
+      canvas,
+      ctx: canvas.getContext('2d'),
+    })
+    this.initPDF()
+  }
+
+  componentDidUpdate () {
+    const { url } = this.props
+    const { url: urlOld } = this.state
+    if (url !== urlOld && urlOld) {
+      this.setState({ loading: true, url: url })
+      this.initPDF()
+    }
+  }
+
+  // 清空canvas
+  clearCanvas () {
+    const { canvas, ctx } = this.state
+    if (canvas && ctx) {
+      console.log('Clear canvas')
+      ctx.fillStyle = '#fff'
+      ctx.beginPath()
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.closePath()
+    }
+  }
+
   initPDF () {
     const that = this
     const { url } = that.props
-    const { currentPage } = this.state
-    const loadingTask = pdfjsLib.getDocument(url)
+    const { currentPage, pwd } = this.state
+    // 清空canvas
+    this.clearCanvas()
+    const loadingTask = pdfjsLib.getDocument({
+      url: url,
+      password: pwd,
+    })
+    loadingTask.onPassword = () => {
+      console.log('need pwd')
+      that.setState({
+        needPwd: true,
+        pwdModalShow: true,
+      })
+    }
     loadingTask.promise.then(function (pdf) {
       console.log('PDF loaded')
       console.log(`PDF page Num: ${pdf.numPages}`)
-      that.setState({ pdfDoc: pdf, pageNum: pdf.numPages })
+      that.setState({ pdfDoc: pdf, url: url, pageNum: pdf.numPages })
       // Fetch the first page
       that.renderPage(currentPage)
     }).catch(function (reason) {
@@ -67,15 +115,6 @@ class Viewer extends React.Component {
     });
   }
 
-  componentDidMount () {
-    const canvas = document.getElementById('the-canvas')
-    this.setState({
-      canvas,
-      ctx: canvas.getContext('2d'),
-    })
-    this.initPDF()
-  }
-
   changePage = (page) => {
     this.setState({
       loading: true,
@@ -85,9 +124,36 @@ class Viewer extends React.Component {
   }
 
   render () {
-    const { loading, currentPage, pageNum } = this.state
+    const that = this
+    const {
+      loading,
+      currentPage,
+      pageNum,
+      pwdModalShow,
+    } = that.state
+    const propsOfModalPwd = {
+      title: '请输入pdf密码',
+      visible: pwdModalShow,
+      onOk: () => {
+        that.setState({
+          pwd: '123456',
+          pwdModalShow: false,
+        })
+        that.initPDF()
+      },
+      closable: false,
+      cancelButtonProps: false,
+    }
     return (
       <div className={les.container}>
+        {
+          pwdModalShow &&
+          (
+            <Modal {...propsOfModalPwd}>
+              输入密码
+            </Modal>
+          )
+        }
         <div className={les.topBar}>
           <Pagination
             current={currentPage}
