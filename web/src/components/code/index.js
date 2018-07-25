@@ -8,9 +8,6 @@ import 'highlight.js/styles/tomorrow-night-eighties.css'
 // hljs.initHighlightingOnLoad()
 
 class Code extends React.Component {
-  componentDidMount () {
-    hljs.initHighlighting()
-  }
   render () {
     const {
       type,
@@ -21,9 +18,10 @@ class Code extends React.Component {
     )) {
       throw new Error(`type of code is error: ${type}`)
     }
+    const dom = hljs.highlight(type, code)
     return (
       <pre>
-        <code className={type}>{code}</code>
+         <code ref={this.codeBlock} className={`hljs ${type}`} dangerouslySetInnerHTML={{ __html: dom.value }} />
       </pre>
     )
   }

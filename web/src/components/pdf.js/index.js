@@ -10,9 +10,9 @@ const pdfjsLib = window['pdfjs-dist/build/pdf']
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/pdfjs/pdf.worker.js'
 
 class Viewer extends React.Component {
-  constructor (props) {
-    super(props)
-  }
+  // constructor (props) {
+  //   super(props)
+  // }
 
   state = {
     pdfDoc: null,
