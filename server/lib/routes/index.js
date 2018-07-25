@@ -45,10 +45,10 @@ var router = function router(app) {
     var matchFile = fs.existsSync(filePath);
     console.log(matchFile);
     if (!matchFile) {
-      return res.send({ code: 'N', body: 'file is not exist' });
+      return res.send({ status: 'fail', data: 'file is not exist' });
     }
     var base64Data = base64_encode(filePath);
-    return res.send({ code: 'Y', body: base64Data });
+    return res.send({ status: 'success', data: base64Data });
   });
 };
 
