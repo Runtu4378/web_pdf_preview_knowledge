@@ -38,12 +38,13 @@ class Layout extends React.Component {
     }
     return (
       <Page>
-        <Row gutter={16}>
-          <Col span={4}>
+        <Row gutter={16} className={les.container}>
+          <Col span={4} className={les.left}>
             <h2>目录</h2>
             <div>
               <p><a href="#p1">利用浏览器的自带插件实现预览</a></p>
               <p><a href="#p2">JS 插件自行实现预览</a></p>
+              <p><a href="#p3">参考资料</a></p>
             </div>
             <div>
               <Select style={{ width: '100%' }} value={showUrl} onChange={this.changeUrl}>
@@ -53,7 +54,7 @@ class Layout extends React.Component {
               </Select>
             </div>
           </Col>
-          <Col span={20} className={les.container}>
+          <Col span={20} className={les.right}>
             <h2>PDF 预览实现的两种方式</h2>
             <h3><a name="p1">利用浏览器的自带插件实现预览</a></h3>
   
@@ -150,6 +151,24 @@ class Layout extends React.Component {
                   url={showUrl}
                 />
               </Part>
+            </Part>
+
+            <h3><a name="p3">参考资料</a></h3>
+            <Part>
+              <ul>
+                <li>
+                  <a href="https://blog.csdn.net/qappleh/article/details/80250492">前端预览PDF总结：iframe、embed、PDFObject、PDF.js</a>
+                </li>
+                <li>
+                  <a href="https://mozilla.github.io/pdf.js/">mozilla/PDF.js 官网</a>
+                </li>
+                <li>
+                  <a href="https://github.com/mozilla/pdf.js">mozilla/PDF.js github仓库</a>
+                </li>
+                <li>
+                  <a href="https://mozilla.github.io/pdf.js/api/draft/index.html">mozilla/PDF.js API文档</a>
+                </li>
+              </ul>
             </Part>
           </Col>
         </Row>
