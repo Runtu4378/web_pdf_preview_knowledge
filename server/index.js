@@ -11,8 +11,6 @@ app.use(bodyParser.urlencoded({
   extended: true,
 })) // for parsing application/x-www-form-urlencoded
 
-app.use('/dist', express.static('dist'))
-
 const port = 3000
 const isDev = app.get('env') !== 'production'
 
@@ -20,7 +18,7 @@ Router(app)
 
 if (isDev) {
   // add "reload" to express, see: https://www.npmjs.com/package/reload
-  const server = http.createServer(app);
+  const server = http.createServer(app)
 
   server.listen(port, () => {
     console.log(`The server is running at http://localhost:${port}/`)
