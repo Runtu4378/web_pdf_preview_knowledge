@@ -104,7 +104,7 @@ class Layout extends React.Component {
                 <li>
                   <div><Block>Base64</Block></div>
                   <Part>
-                    Base64的处理方式实际是后台将PDF文件的二进制内容转换为Base64编码
+                    Base64的处理方式实际是后台将PDF文件的二进制内容转换为Base64编码，此时的文件预览和上述二进制的处理方式基本是一样的，区别在于你需要告诉浏览器这串字符的格式是 base64,需要将其转换为pdf. <Block>data:application/pdf;base64,</Block>
                   </Part>
                 </li>
               </ul>
