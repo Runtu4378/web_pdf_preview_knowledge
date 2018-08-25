@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Code from 'components/code'
-import { Part } from 'components/markdown'
+import Example from 'components/example'
 import dealFunc from './dealBase64'
 
 class Page extends React.Component {
@@ -41,29 +41,33 @@ class Page extends React.Component {
       data,
     } = this.state
     return (
-      <Part>
-        <object
-          data={data}
-          type="application/pdf"
-          width="100%"
-          height="500px"
-        >
-          This browser does not support PDFs. Please download the PDF to view it: <a href={data}>Download PDF</a>
-        </object>
-        <Code
-          type="html"
-          code={`<object
+      <Example
+        title='3.object 标签'
+        example={(
+          <object
+            data={data}
+            type="application/pdf"
+            width="100%"
+            height="500px"
+          >
+            This browser does not support PDFs. Please download the PDF to view it: <a href={data}>Download PDF</a>
+          </object>
+        )}
+        label={(
+          <Code
+            type="html"
+            code={`<object
   data="${data}"
   type="application/pdf"
   width="100%"
   height="500px"
 >
 
-  This browser does not support PDFs. Please download the PDF to view it: <a href=${data}>Download PDF</a>
+This browser does not support PDFs. Please download the PDF to view it: <a href="${data}">Download PDF</a>
 
 </object>`}
-        />
-      </Part>
+        />)}
+      />
     )
   }
 }

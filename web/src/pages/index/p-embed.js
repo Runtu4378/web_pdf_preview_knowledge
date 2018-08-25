@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Code from 'components/code'
-import { Part } from 'components/markdown'
+import Example from 'components/example'
 import dealFunc from './dealBase64'
 
 class Page extends React.Component {
@@ -41,23 +41,28 @@ class Page extends React.Component {
       data,
     } = this.state
     return (
-      <Part>
-        <embed
-          src={data}
-          type="application/pdf"
-          width="100%"
-          height="500px"
-        />
-        <Code
-          type="html"
-          code={`<embed
+      <Example
+        title='2.embed 标签'
+        example={(
+          <embed
+            src={data}
+            type="application/pdf"
+            width="100%"
+            height="500px"
+          />
+        )}
+        label={(
+          <Code
+            type="html"
+            code={`<embed
   src="${data}"
   type="application/pdf"
   width="100%"
   height="500px"
 />`}
-        />
-      </Part>
+          />
+        )}
+      />
     )
   }
 }

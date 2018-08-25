@@ -4,8 +4,7 @@ import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/_renderRoutes';
 
 
-let Router = DefaultRouter;
-
+let Router = require('dva/router').routerRedux.ConnectedRouter;
 
 let routes = [
   {
@@ -32,16 +31,18 @@ let routes = [
     "path": "/index/p-object",
     "exact": true,
     "component": require('../index/p-object.js').default
+  },
+  {
+    "component": () => React.createElement(require('D:/code/cmrh/learn/web_pdf_preview_knowledge/web/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/pages', hasRoutesInConfig: false })
   }
 ];
-
 
 export default function() {
   return (
 <Router history={window.g_history}>
-  <Route render={({ location }) =>
-    renderRoutes(routes, {}, { location })
-  } />
-</Router>
+      <Route render={({ location }) =>
+        renderRoutes(routes, {}, { location })
+      } />
+    </Router>
   );
 }

@@ -28,7 +28,7 @@ class Viewer extends React.Component {
 
     canvas: null,
     ctx: null,
-    scale: 1.3,
+    scale: 1.0,
   }
 
   componentDidMount () {

@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Row, Col, Select } from 'antd'
 import Page from 'components/page'
 import Code from 'components/code'
+import Example from 'components/example'
 import { Part, Block } from 'components/markdown'
 import les from './index.less'
 import PDFViewer from 'components/pdf.js'
@@ -32,6 +33,12 @@ class Layout extends React.Component {
     URLType: 'static', // or base64
     showUrl: staticList[0]['href'],
   }
+  componentDidMount () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = `${PUBLIC_PATH}static/pdfjs/pdf.js`;
+    document.body.appendChild(script);
+  }
   changeUrl = (url, type) => {
     this.setState({ URLType: type, showUrl: url })
   }
@@ -43,13 +50,22 @@ class Layout extends React.Component {
     const mapView = (list) => {
       return list.map(d => {
         return (
-          <div key={d.key}>
-            <a href={d.href} target="_blank" rel="noopener noreferrer">{d.label}</a>
-            <Code
-              type="html"
-              code={`<a href="${d.href}" target="_blank" rel="noopener noreferrer">${d.label}</a>`}
-            />
-          </div>
+          <Example
+            key={d.key}
+            example={(
+              <a href={d.href} target="_blank" rel="noopener noreferrer">{d.label}</a>
+            )}
+            label={(
+              <Code
+                type="html"
+                code={`<a
+  href="${d.href}"
+  target="_blank"
+  rel="noopener noreferrer"
+>${d.label}</a>`}
+              />
+            )}
+          />
         )
       })
     }
@@ -80,18 +96,20 @@ class Layout extends React.Component {
             <h2>目录</h2>
             <div>
               <p><a href="#p1">后端提供PDF内容的方式</a></p>
-              <p><a href="#p2">利用浏览器的自带插件实现预览</a></p>
-              <p><a href="#p3">JS插件自行实现预览</a></p>
-              <p><a href="#p4">参考资料</a></p>
+              <p><a href="#p2">利用浏览器的自带插件实现预览（第一推荐）</a></p>
+              <p><a href="#p3">封装pdf.js实现预览</a></p>
+              <p><a href="#p4">使用pdf.js-viewer进行预览（第二推荐）</a></p>
+              <p><a href="#p5">参考资料</a></p>
             </div>
             <div>
               {mapSelect('静态文件', staticList)}
               {mapSelect('跨域静态文件', staticCORSList)}
               {mapSelect('跨域Base64', base64List, 'base64')}
             </div>
+            <div>现在正在预览的url: {showUrl}</div>
           </Col>
           <Col span={20} className={les.right}>
-            <h2><a name="p1">后端提供PDF内容的方式</a></h2>
+            <h3><a name="p1">后端提供PDF内容的方式</a></h3>
             <Part>
               <ul>
                 <li>
@@ -110,8 +128,7 @@ class Layout extends React.Component {
               </ul>
             </Part>
 
-            <h2>PDF 预览实现的两种方式</h2>
-            <h3><a name="p2">利用浏览器的自带插件实现预览</a></h3>
+            <h3><a name="p2">利用浏览器的自带插件实现预览（第一推荐）</a></h3>
   
             <Part>
               <div><Block>缺点：</Block></div>
@@ -146,40 +163,78 @@ class Layout extends React.Component {
   
             <Part>
               <div><Block>变种实现:</Block></div>
-              <h3>1.iframe 内嵌</h3>
               <Piframe type={URLType} url={showUrl} />
   
-              <h3>2.embed 标签</h3>
               <Pembed type={URLType} url={showUrl} />
   
-              <h3>3.object 标签</h3>
               <Pobject type={URLType} url={showUrl} />
             </Part>
-            <h3><a name="p3">JS插件自行实现预览</a></h3>
+            <h3><a name="p3">封装pdf.js实现预览</a></h3>
             <Part>
               <h4>mozilla/pdf.js</h4>
               <Part>
-                <div>
-                  <div><Block>缺点：</Block></div>
-                  <ul>
-                    <li>不支持低版本IE(9以下)</li>
-                    <li>体积约 3m (gzip前)</li>
-                  </ul>
-                  <div><Block>优点：</Block></div>
-                  <ul>
-                    <li>mozilla出品，现在仍在更新</li>
-                    <li>不依赖浏览器的PDF预览插件，大概实现原理是利用算法将 pdf 转换为数据结构，然后在 canvas 上输出</li>
-                    <li>提供若干 API 接口，可以自行封装换页等插件</li>
-                  </ul>
-                </div>
-                <PDFViewer
-                  type={URLType}
-                  url={showUrl}
+                <Example
+                  example={(
+                    <PDFViewer
+                      type={URLType}
+                      url={showUrl}
+                    />
+                  )}
+                  label={(
+                    <div>
+                      <div><Block>缺点：</Block></div>
+                      <ul>
+                        <li>不支持低版本IE(9以下)</li>
+                        <li>体积约 3m (gzip前)</li>
+                      </ul>
+                      <div><Block>优点：</Block></div>
+                      <ul>
+                        <li>mozilla出品，现在仍在更新</li>
+                        <li>不依赖浏览器的PDF预览插件，大概实现原理是利用算法将 pdf 转换为数据结构，然后在 canvas 上输出</li>
+                        <li>提供若干 API 接口，可以自行封装换页等插件</li>
+                      </ul>
+                    </div>
+                  )}
                 />
               </Part>
             </Part>
 
-            <h3><a name="p4">参考资料</a></h3>
+            <h3><a name="p4">使用pdf.js-viewer进行预览（第二推荐）</a></h3>
+            <Part>
+              <Example
+                example={(
+                  <iframe
+                    src="/static/pdfjs-viewer/web/viewer.html?file=/static/normal.pdf"
+                    width="100%"
+                    height="500px"
+                  >  
+                    This browser does not support PDFs. Please download the PDF to view it: <a href="/static/normal.pdf">Download PDF</a>      
+                  </iframe>
+                )}
+                label={(
+                  <div>
+                    <Code
+                    type="html"
+                    code={`<iframe
+  src="/static/pdfjs-viewer/web/viewer.html?file=/static/normal.pdf"
+  width="100%"
+  height="500px"
+>  
+  This browser does not support PDFs. Please download the PDF to view it: <a href="/static/normal.pdf">Download PDF</a>      
+</iframe>`}
+                    />
+                    <div>
+                      pdf.js 官方利用 pdf.js 实现了一个功能强大的单页应用，能够实现丰富的pdf操作，而且依赖性低，可以直接下载下来进行快速移植。
+                      <br/>
+                      如上述例子便是将 viewer.heml 添加到项目的静态目录下，通过内嵌 iframe 调用该页面，把要预览的 pdf 地址通过 url 参数传递给 viewer.html 即可使用到这个强大的应用。
+                    </div>
+                  </div>
+                  
+                )}
+              />
+            </Part>
+
+            <h3><a name="p5">参考资料</a></h3>
             <Part>
               <ul>
                 <li>

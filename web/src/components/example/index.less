@@ -1,0 +1,37 @@
+@br_color: #efefef;
+@padding_v: 10px;
+@padding_h: 16px;
+
+.container {
+  border: 1px solid @br_color;
+  border-radius: 3px;
+  margin-bottom: @padding_v;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .title {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 @padding_h;
+    border-bottom: 1px solid @br_color;
+  }
+  .content {
+    display: flex;
+    .example {
+      width: 50%;
+      flex-shrink: 0;
+      padding: @padding_v @padding_h;
+      border-right: 1px solid @br_color;
+      box-sizing: border-box;
+    }
+    .label {
+      width: 50%;
+      flex-shrink: 0;
+      padding: @padding_v @padding_h;
+      border-left: 1px solid @br_color;
+      box-sizing: border-box;
+    }
+
+  }
+}
