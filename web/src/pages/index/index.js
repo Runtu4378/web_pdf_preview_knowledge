@@ -1,4 +1,5 @@
-import * as React from 'react'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Row, Col, Select } from 'antd'
 import Page from 'components/page'
 import Code from 'components/code'
@@ -264,4 +265,7 @@ class Layout extends React.Component {
   }
 }
 
-export default Layout
+ReactDOM.render(
+  <Layout />,
+  document.getElementById('root')
+)
