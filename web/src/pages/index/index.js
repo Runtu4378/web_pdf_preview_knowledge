@@ -229,11 +229,11 @@ class Layout extends React.Component {
                     <Code
                     type="html"
                     code={`<iframe
-  src=${`${PUBLIC_PATH}static/pdfjs-viewer/web/viewer.html?file=${
+  src="${`${PUBLIC_PATH}static/pdfjs-viewer/web/viewer.html?file=${
     URLType === 'static' ?
     showUrl :
     `data:application/pdf;base64,${showUrl}`
-  }`}
+  }`}"
   width="100%"
   height="500px"
 >  
