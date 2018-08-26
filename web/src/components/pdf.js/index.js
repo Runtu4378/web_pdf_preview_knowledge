@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { Spin, Pagination, Modal } from 'antd'
 import les from './index.less'
-import request from 'utils/request'
 
 // import pdfjsLib from 'pdfjs-dist'
 // import 'pdfjs-dist/build/pdf.worker.js'
 
 const pdfjsLib = window['pdfjs-dist/build/pdf']
 // The workerSrc property shall be specified.
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/pdfjs/pdf.worker.js'
+pdfjsLib.GlobalWorkerOptions.workerSrc = `${PUBLIC_PATH}static/pdfjs/pdf.worker.js`
 
 class Viewer extends React.Component {
   // constructor (props) {
@@ -57,12 +56,7 @@ class Viewer extends React.Component {
     that.setState({ loading: true, url })
     if (type === 'base64') {
       // 进入base64处理模式
-      request({ url }).then(res => {
-        const { success, data } = res
-        if (success) {
-          that.initPDF({ data: atob(data) })
-        }
-      })
+      that.initPDF({ data: atob(url) })
     } else {
       that.initPDF({ url })
     }
@@ -146,6 +140,9 @@ class Viewer extends React.Component {
   render () {
     const that = this
     const {
+      url
+    } = that.props
+    const {
       loading,
       currentPage,
       pageNum,
@@ -159,7 +156,7 @@ class Viewer extends React.Component {
           pwd: '123456',
           pwdModalShow: false,
         })
-        that.initPDF()
+        that.initPDF({ url })
       },
       closable: false,
       cancelButtonProps: false,
@@ -170,7 +167,7 @@ class Viewer extends React.Component {
           pwdModalShow &&
           (
             <Modal {...propsOfModalPwd}>
-              输入密码
+              输入密码，直接点确认就行
             </Modal>
           )
         }

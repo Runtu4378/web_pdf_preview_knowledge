@@ -1,3 +1,4 @@
+import React from 'react'
 import les from './index.less'
 
 const Example = ({

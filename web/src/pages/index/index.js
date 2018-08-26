@@ -1,5 +1,10 @@
-import * as React from 'react'
-import { Row, Col, Select } from 'antd'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {
+  Row,
+  Col,
+  Button,
+} from 'antd'
 import Page from 'components/page'
 import Code from 'components/code'
 import Example from 'components/example'
@@ -10,34 +15,33 @@ import Piframe from './p-iframe'
 import Pembed from './p-embed'
 import Pobject from './p-object'
 
-const Option = Select.Option
-
 const staticList = [
-  { key: 's-normal', href: '/static/normal.pdf', label: '静态文件' },
-  { key: 's-noFont', href: '/static/noFont.pdf', label: '静态文件-无内嵌字体' },
-  { key: 's-needPwd', href: '/static/needPwd.pdf', label: '静态文件-加密文档' },
+  { key: 's-normal', href: `${PUBLIC_PATH}static/normal.pdf`, label: '静态文件' },
+  { key: 's-noFont', href: `${PUBLIC_PATH}static/noFont.pdf`, label: '静态文件-无内嵌字体' },
+  { key: 's-needPwd', href: `${PUBLIC_PATH}static/needPwd.pdf`, label: '静态文件-加密文档' },
 ]
-const staticCORSList = [
-  { key: 's-c-normal', href: 'http://localhost:3000/dist/normal.pdf', label: '跨域静态文件' },
-  { key: 's-c-noFont', href: 'http://localhost:3000/dist/noFont.pdf', label: '跨域静态文件-无内嵌字体' },
-  { key: 's-c-needPwd', href: 'http://localhost:3000/dist/needPwd.pdf', label: '跨域静态文件-加密文档' },
-]
-const base64List = [
-  { key: 'b-normal', href: 'http://localhost:3000/file/normal.pdf', label: '跨域Base64' },
-  { key: 'b-noFont', href: 'http://localhost:3000/file/noFont.pdf', label: '跨域Base64-无内嵌字体' },
-  { key: 'b-needPwd', href: 'http://localhost:3000/file/needPwd.pdf', label: '跨域Base64-加密文档' },
+const btnList = [
+  { key: 'i0', label: '本地静态pdf文档', url: staticList[0]['href'], type: 'static' },
+  { key: 'i1', label: '加密pdf文档', url: staticList[2]['href'], type: 'static' },
+  { key: 'i2', label: 'base64格式的pdf文档', url: 'JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwog' +
+  'IC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAv' +
+  'TWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0K' +
+  'Pj4KZW5kb2JqCgozIDAgb2JqCjw8CiAgL1R5cGUgL1BhZ2UKICAvUGFyZW50IDIgMCBSCiAg' +
+  'L1Jlc291cmNlcyA8PAogICAgL0ZvbnQgPDwKICAgICAgL0YxIDQgMCBSIAogICAgPj4KICA+' +
+  'PgogIC9Db250ZW50cyA1IDAgUgo+PgplbmRvYmoKCjQgMCBvYmoKPDwKICAvVHlwZSAvRm9u' +
+  'dAogIC9TdWJ0eXBlIC9UeXBlMQogIC9CYXNlRm9udCAvVGltZXMtUm9tYW4KPj4KZW5kb2Jq' +
+  'Cgo1IDAgb2JqICAlIHBhZ2UgY29udGVudAo8PAogIC9MZW5ndGggNDQKPj4Kc3RyZWFtCkJU' +
+  'CjcwIDUwIFRECi9GMSAxMiBUZgooSGVsbG8sIHdvcmxkISkgVGoKRVQKZW5kc3RyZWFtCmVu' +
+  'ZG9iagoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDEwIDAwMDAwIG4g' +
+  'CjAwMDAwMDAwNzkgMDAwMDAgbiAKMDAwMDAwMDE3MyAwMDAwMCBuIAowMDAwMDAwMzAxIDAw' +
+  'MDAwIG4gCjAwMDAwMDAzODAgMDAwMDAgbiAKdHJhaWxlcgo8PAogIC9TaXplIDYKICAvUm9v' +
+  'dCAxIDAgUgo+PgpzdGFydHhyZWYKNDkyCiUlRU9G', type: 'base64' },
 ]
 
 class Layout extends React.Component {
   state = {
     URLType: 'static', // or base64
     showUrl: staticList[0]['href'],
-  }
-  componentDidMount () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = `${PUBLIC_PATH}static/pdfjs/pdf.js`;
-    document.body.appendChild(script);
   }
   changeUrl = (url, type) => {
     this.setState({ URLType: type, showUrl: url })
@@ -69,23 +73,13 @@ class Layout extends React.Component {
         )
       })
     }
-    const mapSelect = (title, list, type = 'static') => {
+    const initBtn = ({label, url, type}) => {
       return (
-        <div className={les.selectGup}>
-          <div className={les.title}>{title}</div>
-          <Select style={{ width: '100%' }} defaultValue={null} onChange={(v) => this.changeUrl(v, type)}>
-          {
-            list.map(d => {
-              return (
-                <Option
-                  key={d.key}
-                  value={d.href}
-                >{d.label}</Option>
-              )
-            })
-          }
-          </Select>
-        </div>
+        <Button
+          onClick={() => this.changeUrl(url, type)}
+        >
+          {label}
+        </Button>
       )
     }
 
@@ -95,21 +89,36 @@ class Layout extends React.Component {
           <Col span={4} className={les.left}>
             <h2>目录</h2>
             <div>
-              <p><a href="#p1">后端提供PDF内容的方式</a></p>
-              <p><a href="#p2">利用浏览器的自带插件实现预览（第一推荐）</a></p>
-              <p><a href="#p3">封装pdf.js实现预览</a></p>
-              <p><a href="#p4">使用pdf.js-viewer进行预览（第二推荐）</a></p>
-              <p><a href="#p5">参考资料</a></p>
+              <p><a href="#p1">结论</a></p>
+              <p><a href="#p2">后端提供PDF内容的方式</a></p>
+              <p><a href="#p3">利用浏览器的自带插件实现预览（第一推荐）</a></p>
+              <p><a href="#p4">封装pdf.js实现预览</a></p>
+              <p><a href="#p5">使用pdf.js-viewer进行预览（第二推荐）</a></p>
+              <p><a href="#p6">参考资料</a></p>
             </div>
-            <div>
-              {mapSelect('静态文件', staticList)}
-              {mapSelect('跨域静态文件', staticCORSList)}
-              {mapSelect('跨域Base64', base64List, 'base64')}
+            <div className={les.btnArea}>
+              {initBtn(btnList[0])}
+              {initBtn(btnList[1])}
+              {initBtn(btnList[2])}
             </div>
-            <div>现在正在预览的url: {showUrl}</div>
+            <div className={les.urlShow}>现在正在预览的url: {showUrl}</div>
           </Col>
           <Col span={20} className={les.right}>
-            <h3><a name="p1">后端提供PDF内容的方式</a></h3>
+            <h3><a name="p1">结论</a></h3>
+            <Part>
+              <ul>
+                <li>
+                  如果不要求统一预览PDF的体验，只作为点缀使用的话，直接利用浏览器自带预览效果即可，见 <a href="p3">利用浏览器的自带插件实现预览（第一推荐）</a>
+                </li>
+                <li>
+                  要实现功能丰富，表现统一且稳定的PDF预览体验，成本最低的方式是直接内嵌或二次开发 PDF.js 开源的viewer.html, 具体使用方式可以是内嵌（iframe低版本浏览器可能有兼容问题）或者在新页面打开（把viewer.html放在后端进行返回）<a href="#p5">使用pdf.js-viewer进行预览（第二推荐）</a>
+                </li>
+                <li>
+                  更高层次的追求的话可以自行封装PDF.js，但是要求对实现细节有了解和比较有空 <a href="#p4">封装pdf.js实现预览</a>
+                </li>
+              </ul>
+            </Part>
+            <h3><a name="p2">后端提供PDF内容的方式</a></h3>
             <Part>
               <ul>
                 <li>
@@ -128,7 +137,7 @@ class Layout extends React.Component {
               </ul>
             </Part>
 
-            <h3><a name="p2">利用浏览器的自带插件实现预览（第一推荐）</a></h3>
+            <h3><a name="p3">利用浏览器的自带插件实现预览（第一推荐）</a></h3>
   
             <Part>
               <div><Block>缺点：</Block></div>
@@ -169,7 +178,7 @@ class Layout extends React.Component {
   
               <Pobject type={URLType} url={showUrl} />
             </Part>
-            <h3><a name="p3">封装pdf.js实现预览</a></h3>
+            <h3><a name="p4">封装pdf.js实现预览</a></h3>
             <Part>
               <h4>mozilla/pdf.js</h4>
               <Part>
@@ -199,12 +208,16 @@ class Layout extends React.Component {
               </Part>
             </Part>
 
-            <h3><a name="p4">使用pdf.js-viewer进行预览（第二推荐）</a></h3>
+            <h3><a name="p5">使用pdf.js-viewer进行预览（第二推荐）</a></h3>
             <Part>
               <Example
                 example={(
                   <iframe
-                    src="/static/pdfjs-viewer/web/viewer.html?file=/static/normal.pdf"
+                    src={`${PUBLIC_PATH}static/pdfjs-viewer/web/viewer.html?file=${
+                      URLType === 'static' ?
+                      showUrl :
+                      `data:application/pdf;base64,${showUrl}`
+                    }`}
                     width="100%"
                     height="500px"
                   >  
@@ -234,26 +247,26 @@ class Layout extends React.Component {
               />
             </Part>
 
-            <h3><a name="p5">参考资料</a></h3>
+            <h3><a name="p6">参考资料</a></h3>
             <Part>
               <ul>
                 <li>
-                  <a href="https://blog.csdn.net/maweiqi/article/details/7677411">各浏览器对常用或者错误的 Content-Type 类型处理方式不一致</a>
+                  <a target="_blank" href="https://blog.csdn.net/maweiqi/article/details/7677411">各浏览器对常用或者错误的 Content-Type 类型处理方式不一致</a>
                 </li>
                 <li>
-                  <a href="https://blog.csdn.net/qappleh/article/details/80250492">前端预览PDF总结：iframe、embed、PDFObject、PDF.js</a>
+                  <a target="_blank" href="https://blog.csdn.net/qappleh/article/details/80250492">前端预览PDF总结：iframe、embed、PDFObject、PDF.js</a>
                 </li>
                 <li>
-                  <a href="https://mozilla.github.io/pdf.js/">mozilla/PDF.js 官网</a>
+                  <a target="_blank" href="https://mozilla.github.io/pdf.js/">mozilla/PDF.js 官网</a>
                 </li>
                 <li>
-                  <a href="https://github.com/mozilla/pdf.js">mozilla/PDF.js github仓库</a>
+                  <a target="_blank" href="https://github.com/mozilla/pdf.js">mozilla/PDF.js github仓库</a>
                 </li>
                 <li>
-                  <a href="https://mozilla.github.io/pdf.js/api/draft/index.html">mozilla/PDF.js API文档</a>
+                  <a target="_blank" href="https://mozilla.github.io/pdf.js/api/draft/index.html">mozilla/PDF.js API文档</a>
                 </li>
                 <li>
-                  <a href="https://mozilla.github.io/pdf.js/web/viewer.html">mozilla/PDF.js 官方实现的pdf阅读器</a>
+                  <a target="_blank" href="https://mozilla.github.io/pdf.js/web/viewer.html">mozilla/PDF.js 官方实现的pdf阅读器</a>
                 </li>
               </ul>
             </Part>
@@ -264,4 +277,7 @@ class Layout extends React.Component {
   }
 }
 
-export default Layout
+ReactDOM.render(
+  <Layout />,
+  document.getElementById('root')
+)

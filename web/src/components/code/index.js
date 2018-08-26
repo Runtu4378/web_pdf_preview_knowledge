@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import hljs from 'highlight.js'
 // 风格主题样式
 // import 'highlight.js/styles/default.css'
