@@ -229,11 +229,19 @@ class Layout extends React.Component {
                     <Code
                     type="html"
                     code={`<iframe
-  src="/static/pdfjs-viewer/web/viewer.html?file=/static/normal.pdf"
+  src=${`${PUBLIC_PATH}static/pdfjs-viewer/web/viewer.html?file=${
+    URLType === 'static' ?
+    showUrl :
+    `data:application/pdf;base64,${showUrl}`
+  }`}
   width="100%"
   height="500px"
 >  
-  This browser does not support PDFs. Please download the PDF to view it: <a href="/static/normal.pdf">Download PDF</a>      
+  This browser does not support PDFs. Please download the PDF to view it: <a href="${
+    URLType === 'static' ?
+    showUrl :
+    `data:application/pdf;base64,${showUrl}`
+  }">Download PDF</a>      
 </iframe>`}
                     />
                     <div>

@@ -2269,7 +2269,7 @@
                     }, "Download PDF")),
                     "label": s.default.createElement("div", null, s.default.createElement(d.default, {
                         "type": "html",
-                        "code": '<iframe\n  src="/static/pdfjs-viewer/web/viewer.html?file=/static/normal.pdf"\n  width="100%"\n  height="500px"\n>  \n  This browser does not support PDFs. Please download the PDF to view it: <a href="/static/normal.pdf">Download PDF</a>      \n</iframe>'
+                        "code": "<iframe\n  src=/web_pdf_preview_knowledge/web/dist/static/pdfjs-viewer/web/viewer.html?file=" + ("static" === t ? i : "data:application/pdf;base64," + i) + '\n  width="100%"\n  height="500px"\n>  \n  This browser does not support PDFs. Please download the PDF to view it: <a href="' + ("static" === t ? i : "data:application/pdf;base64," + i) + '">Download PDF</a>      \n</iframe>'
                     }), s.default.createElement("div", null, "pdf.js 官方利用 pdf.js 实现了一个功能强大的单页应用，能够实现丰富的pdf操作，而且依赖性低，可以直接下载下来进行快速移植。", s.default.createElement("br", null), "如上述例子便是将 viewer.heml 添加到项目的静态目录下，通过内嵌 iframe 调用该页面，把要预览的 pdf 地址通过 url 参数传递给 viewer.html 即可使用到这个强大的应用。"))
                 })), s.default.createElement("h3", null, s.default.createElement("a", {
                     "name": "p6"
