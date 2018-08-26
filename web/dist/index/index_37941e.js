@@ -40,7 +40,7 @@
         return __webpack_require__.d(n, "a", n), n;
     }, __webpack_require__.o = function(e, n) {
         return Object.prototype.hasOwnProperty.call(e, n);
-    }, __webpack_require__.p = "/web/dist/", __webpack_require__(__webpack_require__.s = 89);
+    }, __webpack_require__.p = "/web_pdf_preview_knowledge/web/dist/", __webpack_require__(__webpack_require__.s = 89);
 }([ function(e, n, t) {
     e.exports = t(134)();
 }, function(e, n, t) {
@@ -2124,15 +2124,15 @@
     }
     var v = [ {
         "key": "s-normal",
-        "href": "/web/dist/static/normal.pdf",
+        "href": "/web_pdf_preview_knowledge/web/dist/static/normal.pdf",
         "label": "静态文件"
     }, {
         "key": "s-noFont",
-        "href": "/web/dist/static/noFont.pdf",
+        "href": "/web_pdf_preview_knowledge/web/dist/static/noFont.pdf",
         "label": "静态文件-无内嵌字体"
     }, {
         "key": "s-needPwd",
-        "href": "/web/dist/static/needPwd.pdf",
+        "href": "/web_pdf_preview_knowledge/web/dist/static/needPwd.pdf",
         "label": "静态文件-加密文档"
     } ], _ = [ {
         "key": "i0",
@@ -2261,7 +2261,7 @@
                     "name": "p5"
                 }, "使用pdf.js-viewer进行预览（第二推荐）")), s.default.createElement(p.Part, null, s.default.createElement(u.default, {
                     "example": s.default.createElement("iframe", {
-                        "src": "/web/dist/static/pdfjs-viewer/web/viewer.html?file=" + ("static" === t ? i : "data:application/pdf;base64," + i),
+                        "src": "/web_pdf_preview_knowledge/web/dist/static/pdfjs-viewer/web/viewer.html?file=" + ("static" === t ? i : "data:application/pdf;base64," + i),
                         "width": "100%",
                         "height": "500px"
                     }, "This browser does not support PDFs. Please download the PDF to view it: ", s.default.createElement("a", {
@@ -16843,7 +16843,7 @@
         return !n || "object" != typeof n && "function" != typeof n ? e : n;
     }
     var d = window["pdfjs-dist/build/pdf"];
-    d.GlobalWorkerOptions.workerSrc = "/web/dist/static/pdfjs/pdf.worker.js";
+    d.GlobalWorkerOptions.workerSrc = "/web_pdf_preview_knowledge/web/dist/static/pdfjs/pdf.worker.js";
     var u = function(e) {
         function Viewer() {
             var e, n, t;
