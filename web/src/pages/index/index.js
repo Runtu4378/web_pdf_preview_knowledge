@@ -18,11 +18,11 @@ import Pobject from './p-object'
 const staticList = [
   { key: 's-normal', href: `${PUBLIC_PATH}static/normal.pdf`, label: '静态文件' },
   { key: 's-noFont', href: `${PUBLIC_PATH}static/noFont.pdf`, label: '静态文件-无内嵌字体' },
-  { key: 's-needPwd', href: `${PUBLIC_PATH}static/needPwd.pdf`, label: '静态文件-加密文档' },
+  { key: 's-needPwd', href: `${PUBLIC_PATH}static/needPwd.pdf`, label: '静态文件-加密文档（密码123456）' },
 ]
 const btnList = [
   { key: 'i0', label: '本地静态pdf文档', url: staticList[0]['href'], type: 'static' },
-  { key: 'i1', label: '加密pdf文档', url: staticList[2]['href'], type: 'static' },
+  { key: 'i1', label: '加密pdf文档（密码123456）', url: staticList[2]['href'], type: 'static' },
   { key: 'i2', label: 'base64格式的pdf文档', url: 'JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwog' +
   'IC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAv' +
   'TWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0K' +
