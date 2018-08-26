@@ -84,6 +84,15 @@ module.exports = (conf) => {
           name: '/static/fonts/[hash].[ext]',
         },
       },
+      {
+        // 专供iconfont方案使用的，后面会带一串时间戳，需要特别匹配到
+        test: /\.(pdf)\??.*$/,
+        include: SRC,
+        loader: 'file-loader',
+        options: {
+          name: '/static/pdf/[hash].[ext]',
+        },
+      },
     ],
   }
 }

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Code from 'components/code'
 import Example from 'components/example'
-import dealFunc from './dealBase64'
 
 class Page extends React.Component {
   state = {
@@ -20,12 +19,7 @@ class Page extends React.Component {
     }
     if (type === 'base64') {
       // 进入base64处理模式
-      dealFunc(url).then(res => {
-        const { success, data } = res
-        if (success) {
-          that.setState({ url, data: `data:application/pdf;base64,${data}` })
-        }
-      })
+      that.setState({ url, data: `data:application/pdf;base64,${url}` })
     } else {
       that.setState({ url, data: url })
     }
