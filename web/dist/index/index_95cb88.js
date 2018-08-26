@@ -2133,7 +2133,7 @@
     }, {
         "key": "s-needPwd",
         "href": "/web_pdf_preview_knowledge/web/dist/static/needPwd.pdf",
-        "label": "静态文件-加密文档"
+        "label": "静态文件-加密文档（密码123456）"
     } ], _ = [ {
         "key": "i0",
         "label": "本地静态pdf文档",
@@ -2141,7 +2141,7 @@
         "type": "static"
     }, {
         "key": "i1",
-        "label": "加密pdf文档",
+        "label": "加密pdf文档（密码123456）",
         "url": v[2]["href"],
         "type": "static"
     }, {
